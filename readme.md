@@ -1,4 +1,7 @@
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzureAD%2Fentra-id-inbound-provisioning%2Fmain%2FLogicApps%2FCSV2SCIMBulkupload%2Fcsv2scimbulkupload-template.json)
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https://raw.githubusercontent.com/gbms311/CSV2SCIMBulkUploadPoC/refs/heads/main/csv2scimbulkupload-template.json)
+
+
+https://github.com/gbms311/CSV2SCIMBulkUploadPoC.git
 
 # CSV2SCIMBulkUpload
 
