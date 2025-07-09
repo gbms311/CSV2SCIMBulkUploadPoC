@@ -334,6 +334,7 @@
                         "givenName": "@{items('For_each')?['FirstName']}"
                       },
                       "nickName": "@{items('For_each')?['Alias']}",
+                      "userName": "@{concat(items('For_each')?['Alias'],'@',items('For_each')?['Domain'])}",
                       "phoneNumbers": [
                         {
                         "type": "work",
@@ -341,11 +342,7 @@
                         }
                       ],
                       "title": "@{items('For_each')?['JobTitle']}",
-                      "urn:ietf:params:scim:schemas:extension:csv:1.0:User": {
-                         "GenderPronoun": "@{items('For_each')?['GenderPronoun']}",
-                         "HireDate": "@{concat(items('For_each')?['HireDate'],items('For_each')?['GMTOffset'])}",                       
-                         "JobCode": "@{items('For_each')?['JobCode']}"
-                      },                      
+                      "userType": "@{items('For_each')?['WorkerType']}"
                       "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User": {
                         "organization": "@{items('For_each')?['Company']}",                        
                         "costCenter": "@{items('For_each')?['CostCenter']}",
@@ -356,8 +353,11 @@
                           "value": "@{items('For_each')?['ManagerID']}"
                         }
                       },
-                      "userName": "@{items('For_each')?['Alias']}",
-                      "userType": "@{items('For_each')?['WorkerType']}"
+                      "urn:ietf:params:scim:schemas:extension:csv:1.0:User": {
+                         "GenderPronoun": "@{items('For_each')?['GenderPronoun']}",
+                         "HireDate": "@{concat(items('For_each')?['HireDate'],items('For_each')?['GMTOffset'])}",                       
+                         "JobCode": "@{items('For_each')?['JobCode']}"
+                      }
                     },
                     "method": "POST",
                     "path": "/Users"
