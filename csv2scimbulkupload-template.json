@@ -4,7 +4,7 @@
   "parameters": {
     "logicAppName": {
       "type": "string",
-      "defaultValue": "CSV2SCIMBulkUpload",
+      "defaultValue": "Csv2ScimBulkUploadPoC",
       "metadata": {
         "description": "Name of the Logic App."
       }
@@ -100,11 +100,11 @@
     },
     "Convert_CSV_to_JSON-URI": {
       "type": "string",
-      "defaultValue": "https://webapp-qy3rid3tc4pcq.azurewebsites.net/csvtojson"
+      "defaultValue": "https://{fqdn-of-web-app-service}/csvtojson"
     },
     "Send_SCIMBulkPayload_to_API_endpoint-URI": {
       "type": "string",
-      "defaultValue": "https://graph.microsoft.com/beta/servicePrincipals/5f224b4d-9c1b-3190-bcbb-8e6a23b015eb/synchronization/jobs/API2AD.b12381d28eaf43bcb392923d3a30fc6e.77e28e0f-8d38-4502-9251-134f2d6e40a9/bulkUpload"
+      "defaultValue": "https://graph.microsoft.com/v1.0/servicePrincipals/{servicePrincipalId}/synchronization/jobs/{jobId}/bulkUpload"
     },
     "Send_SCIMBulkPayload_to_API_endpoint-Audience": {
       "type": "string",
@@ -124,11 +124,11 @@
     },
     "azurefile_displayName": {
       "type": "string",
-      "defaultValue": "CSVData"
+      "defaultValue": "csvdata"
     },
     "azurefile_accountName": {
       "type": "string",
-      "defaultValue": "csveastus",
+      "defaultValue": "csvidgov",
       "metadata": {
         "description": "Name or file endpoint of the Azure Storage account the connector should use."
       }
@@ -312,6 +312,11 @@
                   "inputs": {
                     "bulkId": "@{guid()}",
                     "data": {
+                       "schemas": [
+                        "urn:ietf:params:scim:schemas:core:2.0:User",
+                        "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User",
+                        "urn:ietf:params:scim:schemas:extension:csv:1.0:User"
+                      ],
                       "active": "@if(equals(items('For_each')?['WorkerStatus'],'Active'),true,false)",
                       "addresses": [
                         {
@@ -323,40 +328,36 @@
                         }
                       ],
                       "displayName": "@{items('For_each')?['FullName']}",
-                      "externalId": "@{items('For_each')?['WorkerID']}",
+                      "externalId": "@{items('For_each')?['EmployeeID']}",
                       "name": {
                         "familyName": "@{items('For_each')?['LastName']}",
                         "givenName": "@{items('For_each')?['FirstName']}"
                       },
-                      "nickName": "@{items('For_each')?['UserID']}",
+                      "nickName": "@{items('For_each')?['Alias']}",
                       "phoneNumbers": [
                         {
                         "type": "work",
                         "value": "@{items('For_each')?['OfficePhone']}"
                         }
                       ],
-                      "schemas": [
-                        "urn:ietf:params:scim:schemas:core:2.0:User",
-                        "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User",
-                        "urn:ietf:params:scim:schemas:extension:csv:1.0:User"
-                      ],
                       "title": "@{items('For_each')?['JobTitle']}",
                       "urn:ietf:params:scim:schemas:extension:csv:1.0:User": {
                          "GenderPronoun": "@{items('For_each')?['GenderPronoun']}",
                          "HireDate": "@{items('For_each')?['HireDate']}",
-                         "JobCode": "@{items('For_each')?['Custom01']}"
+                         "employeeHireDate": "@concat(@{items('For_each')?['HireDate']},@{items('For_each')?['HireDate']})"                        
+                         "JobCode": "@{items('For_each')?['JobCode']}"
                       },                      
                       "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User": {
                         "organization": "@{items('For_each')?['Company']}",                        
                         "costCenter": "@{items('For_each')?['CostCenter']}",
                         "department": "@{items('For_each')?['Department']}",
                         "division": "@{items('For_each')?['Division']}",
-                        "employeeNumber": "@{items('For_each')?['WorkerID']}",
+                        "employeeNumber": "@{items('For_each')?['EmployeeID']}",
                         "manager": {
                           "value": "@{items('For_each')?['ManagerID']}"
                         }
                       },
-                      "userName": "@{items('For_each')?['UserID']}",
+                      "userName": "@{items('For_each')?['Alias']}",
                       "userType": "@{items('For_each')?['WorkerType']}"
                     },
                     "method": "POST",
@@ -534,10 +535,10 @@
                           "CountryCode": {
                             "type": "string"
                           },
-                          "Custom01": {
+                          "JobCode": {
                             "type": "string"
                           },
-                          "Custom02": {
+                          "Custom01": {
                             "type": "string"
                           },
                           "Department": {
@@ -556,6 +557,9 @@
                             "type": "string"
                           },
                           "HireDate": {
+                            "type": "string"
+                          },
+                          "GMToffset": {
                             "type": "string"
                           },
                           "JobTitle": {
@@ -579,10 +583,10 @@
                           "StreetAddress": {
                             "type": "string"
                           },
-                          "UserID": {
+                          "Alias": {
                             "type": "string"
                           },
-                          "WorkerID": {
+                          "EmployeeID": {
                             "type": "string"
                           },
                           "WorkerStatus": {
@@ -596,10 +600,10 @@
                           }
                         },
                         "required": [
-                          "WorkerID",
+                          "EmployeeID",
                           "WorkerStatus",
                           "WorkerType",
-                          "UserID",
+                          "Alias",
                           "FirstName",
                           "LastName",
                           "FullName"

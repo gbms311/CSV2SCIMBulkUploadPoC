@@ -1,4 +1,4 @@
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzureAD%2Fentra-id-inbound-provisioning%2Fmain%2FLogicApps%2FCSV2SCIMBulkUpload%2Fcsv2scimbulkupload-template.json)
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzureAD%2Fentra-id-inbound-provisioning%2Fmain%2FLogicApps%2FCSV2SCIMBulkupload%2Fcsv2scimbulkupload-template.json)
 
 # CSV2SCIMBulkUpload
 
@@ -17,4 +17,5 @@ feature request as a new Issue.
 For help and questions about Entra ID API-driven inbound provisioning, refer to the [documentation](https://aka.ms/Entra/ProvisionFromAnySource)
 
 ## Credits
+This is a clone and tweak from [CSV2SCIMBulkUpload](https://github.com/AzureAD/entra-id-inbound-provisioning/tree/main/LogicApps/CSV2SCIMBulkUpload)
 The workflow reuses the awesome [CSVtoJSONcore](https://github.com/joelbyford/CSVtoJSONcore/) Azure function. 
