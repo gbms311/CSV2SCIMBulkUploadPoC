@@ -343,8 +343,7 @@
                       "title": "@{items('For_each')?['JobTitle']}",
                       "urn:ietf:params:scim:schemas:extension:csv:1.0:User": {
                          "GenderPronoun": "@{items('For_each')?['GenderPronoun']}",
-                         "HireDate": "@{items('For_each')?['HireDate']}",
-                         "employeeHireDate": "@{concat(items('For_each')?['HireDate'],items('For_each')?['GMTOffset'])}",                       
+                         "HireDate": "@{concat(items('For_each')?['HireDate'],items('For_each')?['GMTOffset'])}",                       
                          "JobCode": "@{items('For_each')?['JobCode']}"
                       },                      
                       "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User": {
@@ -419,7 +418,7 @@
                 "path": "/datasets/default/GetFileContentByPath",
                 "queries": {
                   "inferContentType": true,
-                  "path": "/csvdata/csv-with-5-records.txt",
+                  "path": "/csvdata/csv-newhires.csv",
                   "queryParametersSingleEncoded": true
                 }
               }
