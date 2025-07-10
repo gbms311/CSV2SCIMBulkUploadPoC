@@ -6,7 +6,7 @@
       "type": "string",
       "defaultValue": "Csv2ScimBulkUploadPoC",
       "metadata": {
-        "description": "Logic App to read a CSV file from an Azure Web Service (file store) and convert the CSV to JSON to SCIM payload, and call the Entra SCIM API to provision users"
+        "description": "Name of the Logic App."
       }
     },
     "logicAppLocation": {
@@ -310,65 +310,58 @@
                   },
                   "type": "Compose",
                   "inputs": {
-                        "bulkId": "@{guid()}",
-                        "data": {
-                            "schemas": [
-                                "urn:ietf:params:scim:schemas:core:2.0:User",
-                                "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User",
-                                "urn:ietf:params:scim:schemas:extension:csv:1.0:User"
-                            ],
-                            "Id": "@{items('For_each')?['EmployeeID']}",
-                            "externalId": "@{items('For_each')?['EmployeeID']}",
-                            "active": "@if(equals(items('For_each')?['WorkerStatus'],'Active'),true,false)",
-                            "displayName": "@{concat(items('For_each')?['FirstName'],'@',items('For_each')?['LastName'])}",
-                            "name": {
-                                "familyName": "@{items('For_each')?['LastName']}",
-                                "middleName": "@{items('For_each')?['MiddleName']}",
-                                "givenName": "@{items('For_each')?['FirstName']}",
-                                "honorificPrefix": "@{items('For_each')?['NamePrefix']}"
-                            },
-                            "userName": "@{concat(items('For_each')?['AliasUserID'],'@',items('For_each')?['DomainName'])}",
-                            "userType": "@{items('For_each')?['WorkerType']}",
-                            "phoneNumbers": [
-                                {
-                                    "type": "mobile",
-                                    "value": "@{items('For_each')?['MobileNumber']}"
-                                }
-                            ],
-                            "title": "@{items('For_each')?['JobTitle']}",
-                            "addresses": [
-                                {
-                                    "type": "work",
-                                    "streetAddress": "@{concat(items('For_each')?['AdddressLine1'],'\n',items('For_each')?['AddressLine2'])}",
-                                    "locality": "@{items('For_each')?['City']}",
-                                    "region": "@{items('For_each')?['Region']}",
-                                    "postalCode": "@{items('For_each')?['PostalCode']}",
-                                    "country": "@{items('For_each')?['Country']}",
-                                    "primary": true
-                                }
-                            ],
-                            "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User": {
-                                "organization": "@{items('For_each')?['Company']}",
-                                "costCenter": "@{items('For_each')?['CostCenter']}",
-                                "department": "@{items('For_each')?['Department']}",
-                                "division": "@{items('For_each')?['Division']}",
-                                "employeeNumber": "@{items('For_each')?['EmployeeID']}",
-                                "manager": {
-                                    "value": "@{items('For_each')?['ManagerEmployeeID']}",
-                                    "displayName": "@{items('For_each')?['ManagerDisplayName']}"
-                                }
-                            },
-                            "urn:ietf:params:scim:schemas:extension:csv:1.0:User": {
-                                "GenderPronoun": "@{items('For_each')?['GenderPronoun']}",
-                                "HireDate": "@{concat(items('For_each')?['HireDate'],items('For_each')?['GMToffset'])}",
-                                "JobCode": "@{items('For_each')?['JobCode']}",
-                                "Location": "@{items('For_each')?['CountryReferenceTwoLetter']}",
-                                "DomainName": "@{items('For_each')?['DomainName']}"
-                            }
-                        },
-                        "method": "POST",
-                        "path": "/Users"
-                    }
+                    "bulkId": "@{guid()}",
+                    "data": {
+                       "schemas": [
+                        "urn:ietf:params:scim:schemas:core:2.0:User",
+                        "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User",
+                        "urn:ietf:params:scim:schemas:extension:csv:1.0:User"
+                      ],
+                      "active": "@if(equals(items('For_each')?['WorkerStatus'],'Active'),true,false)",
+                      "addresses": [
+                        {
+                        "country": "@{items('For_each')?['CountryCode']}",
+                        "locality": "@{items('For_each')?['City']}",
+                        "postalCode": "@{items('For_each')?['ZipCode']}",
+                        "streetAddress": "@{items('For_each')?['StreetAddress']}",
+                        "type": "work"
+                        }
+                      ],
+                      "displayName": "@{items('For_each')?['FullName']}",
+                      "externalId": "@{items('For_each')?['EmployeeID']}",
+                      "name": {
+                        "familyName": "@{items('For_each')?['LastName']}",
+                        "givenName": "@{items('For_each')?['FirstName']}"
+                      },
+                      "nickName": "@{items('For_each')?['Alias']}",
+                      "userName": "@{concat(items('For_each')?['Alias'],'@',items('For_each')?['Domain'])}",
+                      "phoneNumbers": [
+                        {
+                        "type": "work",
+                        "value": "@{items('For_each')?['OfficePhone']}"
+                        }
+                      ],
+                      "title": "@{items('For_each')?['JobTitle']}",
+                      "userType": "@{items('For_each')?['WorkerType']}",
+                      "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User": {
+                        "organization": "@{items('For_each')?['Company']}",                        
+                        "costCenter": "@{items('For_each')?['CostCenter']}",
+                        "department": "@{items('For_each')?['Department']}",
+                        "division": "@{items('For_each')?['Division']}",
+                        "employeeNumber": "@{items('For_each')?['EmployeeID']}",
+                        "manager": {
+                          "value": "@{items('For_each')?['ManagerID']}"
+                        }
+                      },
+                      "urn:ietf:params:scim:schemas:extension:csv:1.0:User": {
+                         "GenderPronoun": "@{items('For_each')?['GenderPronoun']}",
+                         "HireDate": "@{concat(items('For_each')?['HireDate'],items('For_each')?['GMTOffset'])}",                       
+                         "JobCode": "@{items('For_each')?['JobCode']}"
+                      }
+                    },
+                    "method": "POST",
+                    "path": "/Users"
+                  }
                 },
                 "Decrement_NumberOfRecords_": {
                   "runAfter": {
@@ -529,13 +522,7 @@
                     "rows": {
                       "items": {
                         "properties": {
-                          "EmployeeID": {
-                            "type": "string"
-                          },
-                          "WorkerStatus": {
-                            "type": "string"
-                          },
-                          "WorkerType": {
+                          "City": {
                             "type": "string"
                           },
                           "Company": {
@@ -544,7 +531,7 @@
                           "CostCenter": {
                             "type": "string"
                           },
-                          "Domain": {
+                          "CountryCode": {
                             "type": "string"
                           },
                           "JobCode": {
@@ -562,16 +549,7 @@
                           "FirstName": {
                             "type": "string"
                           },
-                          "MiddleName": {
-                            "type": "string"
-                          },
-                          "LastName": {
-                            "type": "string"
-                          },
                           "FullName": {
-                            "type": "string"
-                          },
-                          "NamePrefix": {
                             "type": "string"
                           },
                           "GenderPronoun": {
@@ -586,34 +564,37 @@
                           "JobTitle": {
                             "type": "string"
                           },
-                          "Region": {
+                          "LastName": {
                             "type": "string"
                           },
-                          "ManagerEmployeeID": {
+                          "Location": {
                             "type": "string"
                           },
-                          "ManagerName": {
+                          "ManagerID": {
                             "type": "string"
                           },
-                          "MobilePhone": {
+                          "OfficePhone": {
                             "type": "string"
                           },
-                          "AddressLine1": {
+                          "OnLeave": {
                             "type": "string"
                           },
-                          "AddressLine2": {
+                          "StreetAddress": {
                             "type": "string"
                           },
-                          "City": {
+                          "Alias": {
                             "type": "string"
                           },
-                          "PostalCode": {
+                          "EmployeeID": {
                             "type": "string"
                           },
-                          "Country": {
+                          "WorkerStatus": {
                             "type": "string"
                           },
-                          "CountryReferenceTwoLetter": {
+                          "WorkerType": {
+                            "type": "string"
+                          },
+                          "ZipCode": {
                             "type": "string"
                           }
                         },
@@ -621,9 +602,10 @@
                           "EmployeeID",
                           "WorkerStatus",
                           "WorkerType",
-                          "AliasUserID",
+                          "Alias",
                           "FirstName",
-                          "LastName"
+                          "LastName",
+                          "FullName"
                         ],
                         "type": "object"
                       },
