@@ -100,7 +100,7 @@
     },
     "Convert_CSV_to_JSON-URI": {
       "type": "string",
-      "defaultValue": "https://{fqdn-of-web-app-service}/csvtojson"
+      "defaultValue": "https://fqdn-of-web-app-service/csvtojson"
       "metadata": {
         "description": "Enter the web service fqdn you previously deployed to convery CSV to JSON eg. webapp-newhirescsv.azurewebsites.net"
       }
