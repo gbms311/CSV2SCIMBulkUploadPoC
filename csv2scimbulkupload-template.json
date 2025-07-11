@@ -131,7 +131,7 @@
         "description": "Enter Your Azure Subscription ID which part forms the SPO web call URI"
       }
     },
-    "connections_sharepointonline_externalid": {
+    "Connections_sharepointonline_externalid": {
       "type": "string",
       "metadata": {
         "description": "/subscriptions/cd76d711-b310-46cc-ba26-07325d0f507c/resourceGroups/Server-RG/providers/Microsoft.Web/connections/sharepointonline"
@@ -662,7 +662,7 @@
                     "value": {
                         "sharepointonline": {
                             "id": "[concat('/subscriptions/',subscription().subscriptionId,'/providers/Microsoft.Web/locations/',parameters('logicAppLocation'),'managedApis/sharepointonline')]",
-                            "connectionId": "[parameters('connections_sharepointonline_externalid')]",
+                            "connectionId": "[parameters('Connections_sharepointonline_externalid')]",
                             "connectionName": "sharepointonline"
                         }
                     }
