@@ -121,14 +121,20 @@
     "Azure_Subscription_ID": {
       "type": "string",
       "defaultValue": "cd76d711-b310-46cc-ba26-07325d0f507c",
-            "metadata": {
+      "metadata": {
         "description": "Enter Your Azure Subscription ID which part forms the SPO web call URI"
       }
+    },
+    "connections_sharepointonline_externalid": {
+         "type": "string",
+        "metadata": {
+            "description": "/subscriptions/cd76d711-b310-46cc-ba26-07325d0f507c/resourceGroups/Server-RG/providers/Microsoft.Web/connections/sharepointonline"
+        }
     },
     "SPO_Base_URI": {
       "type": "string",
       "defaultValue": "https://mngenvmcap140120.sharepoint.com",
-            "metadata": {
+      "metadata": {
         "description": "Enter the base URI for your SPO environment"
       }
     },
@@ -148,7 +154,7 @@
       "name": "[parameters('logicAppName')]",
       "location": "[parameters('logicAppLocation')]",
       "dependsOn": [
-        "[resourceId('Microsoft.Web/connections', parameters('azurefile_name'))]"
+        "[resourceId('Microsoft.Web/connections', parameters('SPO_Path_FileName'))]"
       ],
         "properties": {
             "definition": {
@@ -616,8 +622,6 @@
                             }
                         }
                     },
-                    
-                    
                     "Get_file_content": {
                         "runAfter": {},
                         "metadata": {
@@ -651,8 +655,8 @@
                     "type": "Object",
                     "value": {
                         "sharepointonline": {
-                            "id": "/subscriptions/cd76d711-b310-46cc-ba26-07325d0f507c/providers/Microsoft.Web/locations/westus2/managedApis/sharepointonline",
-                            "connectionId": "/subscriptions/cd76d711-b310-46cc-ba26-07325d0f507c/resourceGroups/Server-RG/providers/Microsoft.Web/connections/sharepointonline",
+                            "id": "[concat('/subscriptions/',subscription().subscriptionId,'/providers/Microsoft.Web/locations/',parameters('logicAppLocation'),'managedApis/sharepointonline')]",
+                            "connectionId": "[parameters('connections_sharepointonline_externalid')]",
                             "connectionName": "sharepointonline"
                         }
                     }
