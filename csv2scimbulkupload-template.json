@@ -662,7 +662,7 @@
                     "value": {
                         "sharepointonline": {
                             "id": "[concat('/subscriptions/',subscription().subscriptionId,'/providers/Microsoft.Web/locations/',parameters('logicAppLocation'),'managedApis/sharepointonline')]",
-                            "connectionId": "[parameters('connections_sharepointonline_externalid')]",
+                            "connectionId": "@parameters('connections_sharepointonline_externalid')",
                             "connectionName": "sharepointonline"
                         }
                     }
