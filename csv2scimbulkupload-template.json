@@ -160,7 +160,7 @@
       "name": "[parameters('logicAppName')]",
       "location": "[parameters('logicAppLocation')]",
       "dependsOn": [
-        "[resourceId('Microsoft.Web/connections', parameters('SPO_Path_FileName'))]"
+        "[resourceId('Microsoft.Web/connections')]"
       ],
         "properties": {
             "definition": {
@@ -631,7 +631,7 @@
                     "Get_file_content": {
                         "runAfter": {},
                         "metadata": {
-                            "%252fShared%2bDocuments%252fcsv-newhires.csv": "/Shared Documents/csv-newhires.csv"
+                            "%252fShared%2bDocuments%252fcsv-newhires.csv": "/Shared%2bDocuments/csv-newhires.csv"
                         },
                         "type": "ApiConnection",
                         "inputs": {
