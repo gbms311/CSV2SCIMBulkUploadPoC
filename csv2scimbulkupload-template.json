@@ -11,7 +11,7 @@
                 "connectionName": "sharepointonline"
             }
         }
-    }
+    },
     "logicAppName": {
       "type": "string",
       "defaultValue": "Csv2ScimBulkUploadPoC",
