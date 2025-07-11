@@ -117,29 +117,28 @@
     "RecurrenceInterval": {
       "type": "int",
       "defaultValue": 5
-    },
-    "azurefile_name": {
+    }, 
+    "Azure_Subscription_ID": {
       "type": "string",
-      "defaultValue": "azurefile"
-    },
-    "azurefile_displayName": {
-      "type": "string",
-      "defaultValue": "csvdata"
-    },
-    "azurefile_accountName": {
-      "type": "string",
-      "defaultValue": "csvidgov",
-      "metadata": {
-        "description": "Name or file endpoint of the Azure Storage account the connector should use."
+      "defaultValue": "cd76d711-b310-46cc-ba26-07325d0f507c",
+            "metadata": {
+        "description": "Enter Your Azure Subscription ID which part forms the SPO web call URI"
       }
     },
-    "azurefile_accessKey": {
-      "type": "securestring",
-      "defaultValue": null,
-      "metadata": {
-        "description": "Specify a valid primary/secondary Azure Storage account access key."
+    "SPO_Base_URI": {
+      "type": "string",
+      "defaultValue": "https://mngenvmcap140120.sharepoint.com",
+            "metadata": {
+        "description": "Enter the base URI for your SPO environment"
       }
-    }
+    },
+    "SPO_Path_FileName": {
+      "type": "string",
+      "defaultValue": "%252fShared%2bDocuments%252fcsv-newhires.csv",
+      "metadata": {
+        "description": "URI Encoded file path for SPO site, eg. for 'Shared Documents/csv-new-hires.csv'"
+      }
+    } 
   },
   "variables": {},
   "resources": [
@@ -617,6 +616,8 @@
                             }
                         }
                     },
+                    
+                    
                     "Get_file_content": {
                         "runAfter": {},
                         "metadata": {
