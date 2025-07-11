@@ -385,7 +385,7 @@
                     "Get_CSV_records": {
                             "runAfter": {},
                             "type": "Compose",
-                            "inputs": "@toUpper('Add a SPO file share above and set to Input')"
+                            "inputs": "@toUpper('Add Action -Get File Content-SPO => newhire.csv  ... and set as Input here')"
                     },
                     "Initialize_InvocationDateTime": {
                         "runAfter": {
