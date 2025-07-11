@@ -645,12 +645,31 @@
                     },
                     "Get_file_content": {
                         "runAfter": {},
-                        "metadata": {},
-                        "type": "",
-                        "inputs": {}
+                        "metadata": {
+                            "%252fShared%2bDocuments%252fcsv-newhires.csv": "/Shared%2bDocuments/csv-newhires.csv"
+                        },
+                        "type": "ApiConnection",
+                        "inputs": {
+                            "host": {
+                                "connection": {
+                                    "name": "@parameters('$connections')['sharepointonline']['connectionId']"
+                                }
+                            },
+                            "method": "get",
+                            "path": "/datasets/@{encodeURIComponent(encodeURIComponent('https://mngenvmcap140120.sharepoint.com'))}/files/@{encodeURIComponent('%252fShared%2bDocuments%252fcsv-newhires.csv')}/content",
+                            "queries": {
+                                "inferContentType": true
+                            }
+                        }
                     }
                 },
                 "outputs": {},
+                "parameters": {
+                    "$connections": {
+                        "type": "Object",
+                        "defaultValue": {}
+                    }
+                }
             }
           },
           
