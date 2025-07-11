@@ -6,7 +6,7 @@
       "type": "string",
       "defaultValue": "Csv2ScimBulkUploadPoC",
       "metadata": {
-        "description": "Logic App to read a CSV file from an Azure Web Service (file store) and convert the CSV to JSON to SCIM payload, and call the Entra SCIM API to provision users"
+        "description": "Logic App to read a CSV file from a file store (eg SPO) and convert the CSV to JSON to SCIM payload, and call the Entra SCIM API to provision users"
       }
     },
     "logicAppLocation": {
@@ -672,22 +672,6 @@
           
       "identity": {
         "type": "SystemAssigned"
-      }
-    },
-    {
-      "type": "Microsoft.Web/connections",
-      "apiVersion": "2016-06-01",
-      "location": "[parameters('logicAppLocation')]",
-      "name": "[parameters('azurefile_name')]",
-      "properties": {
-        "api": {
-          "id": "[concat('/subscriptions/',subscription().subscriptionId,'/providers/Microsoft.Web/locations/',parameters('logicAppLocation'),'/managedApis/azurefile')]"
-        },
-        "displayName": "[parameters('azurefile_displayName')]",
-        "parameterValues": {
-          "accountName": "[parameters('azurefile_accountName')]",
-          "accessKey": "[parameters('azurefile_accessKey')]"
-        }
       }
     }
   ],
