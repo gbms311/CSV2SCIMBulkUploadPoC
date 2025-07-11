@@ -596,7 +596,7 @@
                                 }
                             }
                         }
-                    },
+                    }
                 },
                 "outputs": {},
                 "parameters": {
@@ -606,8 +606,7 @@
                     }
                 }
             }
-          },
-          
+        },
       "identity": {
         "type": "SystemAssigned"
       }
