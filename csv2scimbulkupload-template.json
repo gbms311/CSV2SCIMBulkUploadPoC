@@ -100,14 +100,14 @@
     },
     "Convert_CSV_to_JSON-URI": {
       "type": "string",
-      "defaultValue": "https://fqdn-of-web-app-service/csvtojson"
+      "defaultValue": "https://fqdn-of-web-app-service/csvtojson",
       "metadata": {
         "description": "Enter the web service fqdn you previously deployed to convery CSV to JSON eg. webapp-newhirescsv.azurewebsites.net"
       }
     },
     "Send_SCIMBulkPayload_to_API_endpoint-URI": {
       "type": "string",
-      "defaultValue": "https://graph.microsoft.com/v1.0/servicePrincipals/{servicePrincipalId}/synchronization/jobs/{jobId}/bulkUpload"
+      "defaultValue": "https://graph.microsoft.com/v1.0/servicePrincipals/{servicePrincipalId}/synchronization/jobs/{jobId}/bulkUpload",
       "metadata": {
         "description": "Enter the Provisioning Graph API endpoint eg. https://graph.microsoft.com/v1.0/servicePrincipals/37ef8916-02ed-4123-bec2-ae25901964671/synchronization/jobs/API2AAD.d93ad6cee279420ebd3e3243b0c31b9c.92bed202-298d-43c5-af9a-eb5adb3a39d1/bulkUpload"
       } 
@@ -132,10 +132,10 @@
       }
     },
     "connections_sharepointonline_externalid": {
-         "type": "string",
-        "metadata": {
-            "description": "/subscriptions/cd76d711-b310-46cc-ba26-07325d0f507c/resourceGroups/Server-RG/providers/Microsoft.Web/connections/sharepointonline"
-        }
+      "type": "string",
+      "metadata": {
+        "description": "/subscriptions/cd76d711-b310-46cc-ba26-07325d0f507c/resourceGroups/Server-RG/providers/Microsoft.Web/connections/sharepointonline"
+     }
     },
     "SPO_Base_URI": {
       "type": "string",
