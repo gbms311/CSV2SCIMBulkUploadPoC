@@ -150,19 +150,19 @@
                     }
                 },
                 "actions": {
-                    "See_Instructions_Add_SPO_Connector": {
+                    "Get_File_Content_SPO": {
                             "runAfter": {},
                             "type": "Compose",
                             "inputs": "@toUpper('Add Action -Get File Content-SPO => newhire.csv  ... and set as Input here')"
                     },
                     "Get_CSV_records": {
                             "runAfter": {
-                                "See_Instructions_Add_SPO_Connector": [
+                                "Get_File_Content_SPO": [
                                   "Succeeded"
                                 ]    
                             },
                             "type": "Compose",
-                            "inputs": "@body('Get_file_content')"
+                            "inputs": "@body('Get_File_Content_SPO')"
                     },
                     "Convert_CSV_to_JSON": {
                         "runAfter": {
