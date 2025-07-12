@@ -150,9 +150,23 @@
                     }
                 },
                 "actions": {
+                    "See_Instructions_Add_SPO_Connector": {
+                            "runAfter": {},
+                            "type": "Compose",
+                            "inputs": "@toUpper('Add Action -Get File Content-SPO => newhire.csv  ... and set as Input here')"
+                    },
+                    "Get_CSV_records": {
+                            "runAfter": {
+                                "See_Instructions_Add_SPO_Connector": [
+                                  "Succeeded"
+                                ]    
+                            },
+                            "type": "Compose",
+                            "inputs": "@body('Get_file_content')"
+                    },
                     "Convert_CSV_to_JSON": {
                         "runAfter": {
-                            "Get_CSV_records_Original": [
+                            "Get_CSV_records": [
                                 "Succeeded"
                             ]
                         },
@@ -379,16 +393,6 @@
                             }
                         }
                     },
-                    "See_Instructions_Add_SPO_Connector": {
-                            "runAfter": {},
-                            "type": "Compose",
-                            "inputs": "@toUpper('Add Action -Get File Content-SPO => newhire.csv  ... and set as Input here')"
-                    },
-                    "Get_CSV_records_Original": {
-                            "runAfter": {},
-                            "type": "Compose",
-                            "inputs": "@body('Get_file_content')?['$content'])"
-                        },
                     "Initialize_InvocationDateTime": {
                         "runAfter": {
                             "Initialize_SCIMBulkPayload": [
