@@ -2,21 +2,11 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {      
-    "$connections": {
-        "type": "Object",
-        "value": {
-            "sharepointonline": {
-                "id": "[concat('/subscriptions/',subscription().subscriptionId,'/providers/Microsoft.Web/locations/',parameters('logicAppLocation'),'managedApis/sharepointonline')]",
-                "connectionId": "@parameters('connections_sharepointonline_externalid')",
-                "connectionName": "sharepointonline"
-            }
-        }
-    }
     "logicAppName": {
       "type": "string",
       "defaultValue": "Csv2ScimBulkUploadPoC",
       "metadata": {
-        "description": "Logic App to read a CSV file from a file store (eg SPO) and convert the CSV to JSON to SCIM payload, and call the Entra SCIM API to provision users"
+        "description": "Logic App to read a CSV file from a file store (eg SPO) and convert the CSV to JSON to SCIM payload, and call the Entra SCIM API to provision users. After deploying the Logic App, you need to ad a SPO connection as a fist step in the workflow"
       }
     },
     "logicAppLocation": {
@@ -133,40 +123,8 @@
     "RecurrenceInterval": {
       "type": "int",
       "defaultValue": 5
-    }, 
-    "Azure_Subscription_ID": {
-      "type": "string",
-      "defaultValue": "cd76d711-b310-46cc-ba26-07325d0f507c",
-      "metadata": {
-        "description": "Enter Your Azure Subscription ID which part forms the SPO web call URI"
-      }
-    },
-    "connections_sharepointonline_externalid": {
-      "type": "string",
-      "metadata": {
-        "description": "/subscriptions/cd76d711-b310-46cc-ba26-07325d0f507c/resourceGroups/Server-RG/providers/Microsoft.Web/connections/sharepointonline"
-     }
-    },
-    "SPO_Base_URI": {
-      "type": "string",
-      "defaultValue": "https://mngenvmcap140120.sharepoint.com",
-      "metadata": {
-        "description": "Enter the base URI for your SPO environment"
-      }
-    },
-    "SPO_Path_FileName": {
-      "type": "string",
-      "defaultValue": "%252fShared%2bDocuments%252fcsv-newhires.csv",
-      "metadata": {
-        "description": "URI Encoded file path for SPO site, eg. for 'Shared Documents/csv-new-hires.csv'"
-      }
-    } 
+    }
   },
-  
-  
-  
-  
-  
   "variables": {},
   "resources": [
     {
@@ -174,9 +132,6 @@
       "apiVersion": "2019-05-01",
       "name": "[parameters('logicAppName')]",
       "location": "[parameters('logicAppLocation')]",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/connections')]"
-      ],
         "properties": {
             "definition": {
                 "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
@@ -343,7 +298,7 @@
                                         ],
                                         "Id": "@{items('For_each')?['EmployeeNumber']}",
                                         "externalId": "@{items('For_each')?['EmployeeNumber']}",
-                                        "active": "@if(equals(items('For_each')?['WorkerStatus'],'Active'),true,false)",
+                                        "active": "@if(equals(items('For_each')?['AccountEnabled'],'TRUE'),true,false)",
                                         "displayName": "@{concat(items('For_each')?['FirstName'],' ',items('For_each')?['LastName'])}",
                                         "name": {
                                             "familyName": "@{items('For_each')?['LastName']}",
@@ -363,7 +318,7 @@
                                         "addresses": [
                                             {
                                                 "type": "work",
-                                                "streetAddress": "@{items('For_each')?['FormattedAddress']}",
+                                                "streetAddress": "@{concat(items('For_each')?['AddressLine1'],' \n',items('For_each')?['AddressLine2'])}",
                                                 "locality": "@{items('For_each')?['City']}",
                                                 "region": "@{items('For_each')?['Region']}",
                                                 "postalCode": "@{items('For_each')?['PostalCode']}",
@@ -425,13 +380,9 @@
                         }
                     },
                     "Get_CSV_records": {
-                        "runAfter": {
-                            "Get_file_content": [
-                                "Succeeded"
-                            ]
-                        },
-                        "type": "Compose",
-                        "inputs": "@body('Get_file_content')"
+                            "runAfter": {},
+                            "type": "Compose",
+                            "inputs": "@toUpper('Add Action -Get File Content-SPO => newhire.csv  ... and set as Input here')"
                     },
                     "Initialize_InvocationDateTime": {
                         "runAfter": {
@@ -538,7 +489,7 @@
                                                 "EmployeeNumber": {
                                                     "type": "string"
                                                 },
-                                                "WorkerStatus": {
+                                                "AccountEnabled": {
                                                     "type": "string"
                                                 },
                                                 "WorkerType": {
@@ -610,9 +561,6 @@
                                                 "CountryReferenceTwoLetter": {
                                                     "type": "string"
                                                 },
-                                                "FormattedAddress": {
-                                                    "type": "string"
-                                                },
                                                 "GMToffset": {
                                                     "type": "string"
                                                 },
@@ -631,7 +579,7 @@
                                             },
                                             "required": [
                                                 "EmployeeNumber",
-                                                "WorkerStatus",
+                                                "AccountEnabled",
                                                 "FirstName",
                                                 "LastName",
                                                 "AliasUserID",
@@ -640,25 +588,6 @@
                                         }
                                     }
                                 }
-                            }
-                        }
-                    },
-                    "Get_file_content": {
-                        "runAfter": {},
-                        "metadata": {
-                            "%252fShared%2bDocuments%252fcsv-newhires.csv": "/Shared%2bDocuments/csv-newhires.csv"
-                        },
-                        "type": "ApiConnection",
-                        "inputs": {
-                            "host": {
-                                "connection": {
-                                    "name": "@parameters('$connections')['sharepointonline']['connectionId']"
-                                }
-                            },
-                            "method": "get",
-                            "path": "/datasets/@{encodeURIComponent(encodeURIComponent('https://mngenvmcap140120.sharepoint.com'))}/files/@{encodeURIComponent('%252fShared%2bDocuments%252fcsv-newhires.csv')}/content",
-                            "queries": {
-                                "inferContentType": true
                             }
                         }
                     }
@@ -671,8 +600,7 @@
                     }
                 }
             }
-          },
-          
+        },
       "identity": {
         "type": "SystemAssigned"
       }
