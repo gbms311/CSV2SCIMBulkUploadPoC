@@ -150,23 +150,23 @@
                     }
                 },
                 "actions": {
-                    "Get_File_Content_SPO": {
+                    "Get_File_Content_from_SPO": {
                             "runAfter": {},
                             "type": "Compose",
                             "inputs": "@toUpper('Add Action -Get File Content-SPO => newhire.csv  ... and set as Input here')"
                     },
-                    "Get_CSV_records": {
+                    "Extract_CSV_records_from_Body": {
                             "runAfter": {
-                                "Get_File_Content_SPO": [
+                                "Get_File_Content_from_SPO": [
                                   "Succeeded"
                                 ]    
                             },
                             "type": "Compose",
-                            "inputs": "@body('Get_File_Content_SPO')"
+                            "inputs": "@body('Get_File_Content_from_SPO')"
                     },
                     "Convert_CSV_to_JSON": {
                         "runAfter": {
-                            "Get_CSV_records": [
+                            "Extract_CSV_records_from_Body": [
                                 "Succeeded"
                             ]
                         },
@@ -177,7 +177,7 @@
                             "headers": {
                                 "Content-Type": "text/csv"
                             },
-                            "body": "@outputs('Get_CSV_records')"
+                            "body": "@outputs('Extract_CSV_records_from_Body')"
                         }
                     },
                     "For_each": {
