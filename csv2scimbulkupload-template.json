@@ -301,7 +301,7 @@
                                         ],
                                         "Id": "@{items('For_each')?['EmployeeNumber']}",
                                         "externalId": "@{items('For_each')?['EmployeeNumber']}",
-                                        "active": "@if(equals(items('For_each')?['WorkerStatus'],'Active'),true,false)",
+                                        "active": "@if(equals(items('For_each')?['AccountEnabled'],'TRUE'),true,false)",
                                         "displayName": "@{concat(items('For_each')?['FirstName'],' ',items('For_each')?['LastName'])}",
                                         "name": {
                                             "familyName": "@{items('For_each')?['LastName']}",
@@ -321,7 +321,7 @@
                                         "addresses": [
                                             {
                                                 "type": "work",
-                                                "streetAddress": "@{items('For_each')?['FormattedAddress']}",
+                                                "streetAddress": "@{concat(items('For_each')?['AddressLine1'],' \n',items('For_each')?['AddressLine2'])}",
                                                 "locality": "@{items('For_each')?['City']}",
                                                 "region": "@{items('For_each')?['Region']}",
                                                 "postalCode": "@{items('For_each')?['PostalCode']}",
@@ -492,7 +492,7 @@
                                                 "EmployeeNumber": {
                                                     "type": "string"
                                                 },
-                                                "WorkerStatus": {
+                                                "AccountEnabled": {
                                                     "type": "string"
                                                 },
                                                 "WorkerType": {
@@ -564,9 +564,6 @@
                                                 "CountryReferenceTwoLetter": {
                                                     "type": "string"
                                                 },
-                                                "FormattedAddress": {
-                                                    "type": "string"
-                                                },
                                                 "GMToffset": {
                                                     "type": "string"
                                                 },
@@ -585,7 +582,7 @@
                                             },
                                             "required": [
                                                 "EmployeeNumber",
-                                                "WorkerStatus",
+                                                "AccountEnabled",
                                                 "FirstName",
                                                 "LastName",
                                                 "AliasUserID",
