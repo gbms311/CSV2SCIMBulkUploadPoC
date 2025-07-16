@@ -6,7 +6,7 @@
       "type": "string",
       "defaultValue": "Csv2ScimBulkUploadPoC",
       "metadata": {
-        "description": "Logic App to read a CSV file from a file store (eg SPO) and convert the CSV to JSON to SCIM payload, and call the Entra SCIM API to provision users. After deploying the Logic App, you need to ad a SPO connection as a fist step in the workflow"
+        "description": "Logic App to read a CSV file from a file store (eg SharePoint) and convert the CSV to JSON to SCIM payload, and call the Entra SCIM API to provision users. After deploying the Logic App, you need to ad a SPO connection as a fist step in the workflow"
       }
     },
     "logicAppLocation": {
@@ -153,9 +153,9 @@
                     "Get_File_Content_from_SPO": {
                             "runAfter": {},
                             "type": "Compose",
-                            "inputs": "@toUpper('Add Action -Get File Content-SPO => newhire.csv  ... and set as Input here')"
+                            "inputs": "@toUpper('Add Action -Get File Content-SPO => newhire.csv  ... and set as Input here. Also Dont forget to assign permission to the Managed Identity based on LogicApp name')"
                     },
-                    "Extract_CSV_records_from_Body": {
+                    "Extract_CSV_Records_From_body": {
                             "runAfter": {
                                 "Get_File_Content_from_SPO": [
                                   "Succeeded"
@@ -166,7 +166,7 @@
                     },
                     "Convert_CSV_to_JSON": {
                         "runAfter": {
-                            "Extract_CSV_records_from_Body": [
+                            "Extract_CSV_Records_From_body": [
                                 "Succeeded"
                             ]
                         },
@@ -177,7 +177,7 @@
                             "headers": {
                                 "Content-Type": "text/csv"
                             },
-                            "body": "@outputs('Extract_CSV_records_from_Body')"
+                            "body": "@outputs('Extract_CSV_Records_From_body')"
                         }
                     },
                     "For_each": {
